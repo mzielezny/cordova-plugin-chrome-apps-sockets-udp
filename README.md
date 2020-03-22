@@ -1,6 +1,6 @@
 # chrome.sockets.tcp Plugin electron
 
-This plugin provides UDP sockets for Android and iOS.
+This plugin provides UDP sockets for Android, iOS and Electron
 
 ## Status
 
