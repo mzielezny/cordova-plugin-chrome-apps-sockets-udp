@@ -6,6 +6,46 @@ This plugin provides UDP sockets for Android, iOS and Electron
 
 Beta on Android and iOS - work in progress for Electron
 
+
+## How to start using electron plugin ? 
+
+Firstly you have to add to config.xml path to file which will be used when to configure electron start
+
+```xml
+<platform name="electron">
+    <preference name="ElectronSettingsFilePath" value="resources/electron/settings.json" />
+</platform>
+	
+```
+
+in that file you have to configure node integration support 
+
+```javascript
+{
+    "browserWindow": {
+        "height": 600,
+        "webPreferences":{
+            "devTools": true,
+            "nodeIntegration": true
+        },
+        "width": 1024
+    }
+}
+	
+```
+
+after each plugin modification (yes you cane modificate plugin  by yourself in main plugin location) 
+you have to run 
+
+```bash
+cordova platform remove electron 
+cordova platform remove electron@1.1.1 # or any modern version 
+```
+
+Please remember that if yout want to run node plugin you have to use npm. 
+To import any module you have to use "global.require" - main require is overriden by cordova
+
+
 ## Reference
 
 The API reference is [here](https://developer.chrome.com/apps/sockets_udp).

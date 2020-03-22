@@ -6,40 +6,48 @@
 -->
 <plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
     id="cordova-plugin-chrome-apps-sockets-udp"
-    version="1.3.1-dev">
-  <engines>
-    <engine name="cordova" version=">=3.0.0" />
-  </engines>
+    version="1.3.2">
+	<engines>
+		<engine name="cordova" version=">=3.0.0" />
+	</engines>
 
-  <name>Chrome Apps Sockets UDP API</name>
-  <keywords>chrome,socket,sockets,udp</keywords>
-  <repo>https://github.com/MobileChromeApps/cordova-plugin-chrome-apps-sockets-udp.git</repo>
-  <issue>https://github.com/MobileChromeApps/cordova-plugin-chrome-apps-sockets-udp/issues</issue>
+			<name>Chrome Apps Sockets UDP API</name>
+			<keywords>chrome,socket,sockets,udp</keywords>
+			<repo>https://github.com/mzielezny/cordova-plugin-chrome-apps-sockets-udp.git</repo>
+			<issue>https://github.com/mzielezny/cordova-plugin-chrome-apps-sockets-udp/issues</issue>
 
-  <dependency id="cordova-plugin-chrome-apps-common@1" />
+			<dependency id="cordova-plugin-chrome-apps-common@1" />
 
-  <js-module src="sockets.udp.js" name="sockets.udp">
-    <clobbers target="chrome.sockets.udp" />
-  </js-module>
+			<js-module src="sockets.udp.js" name="sockets.udp">
+				<clobbers target="chrome.sockets.udp" />
+			</js-module>
 
-  <platform name="android">
-    <source-file src="src/android/ChromeSocketsUdp.java" target-dir="src/org/chromium" />
+			<platform name="android">
+				<source-file src="src/android/ChromeSocketsUdp.java" target-dir="src/org/chromium" />
 
-    <config-file target="res/xml/config.xml" parent="/widget">
-      <feature name="ChromeSocketsUdp">
-        <param name="android-package" value="org.chromium.ChromeSocketsUdp"/>
-      </feature>
-    </config-file>
-  </platform>
+				<config-file target="res/xml/config.xml" parent="/widget">
+					<feature name="ChromeSocketsUdp">
+						<param name="android-package" value="org.chromium.ChromeSocketsUdp"/>
+					</feature>
+				</config-file>
+			</platform>
 
-  <platform name="ios">
-    <dependency id="cordova-plugin-chrome-apps-iossocketscommon@1" />
-    <source-file src="src/ios/ChromeSocketsUdp.m" />
+			<platform name="ios">
+				<dependency id="cordova-plugin-chrome-apps-iossocketscommon@1" />
+				<source-file src="src/ios/ChromeSocketsUdp.m" />
 
-    <config-file target="config.xml" parent="/widget">
-      <feature name="ChromeSocketsUdp">
-        <param name="ios-package" value="ChromeSocketsUdp"/>
-      </feature>
-    </config-file>
-  </platform>
+				<config-file target="config.xml" parent="/widget">
+					<feature name="ChromeSocketsUdp">
+						<param name="ios-package" value="ChromeSocketsUdp"/>
+					</feature>
+				</config-file>
+			</platform>
+			<platform name="electron">
+
+
+				<js-module src="src/electron/ChromeSocketsUDPProxy.js" name="electronChromeSocketsUdp">
+					<runs />
+				</js-module>
+		</platform>
 </plugin>
+		
