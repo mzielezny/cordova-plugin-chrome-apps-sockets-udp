@@ -1,16 +1,18 @@
-# chrome.sockets.tcp Plugin
+# chrome.sockets.tcp Plugin electron
 
 This plugin provides UDP sockets for Android and iOS.
 
 ## Status
 
-Beta on Android and iOS.
+Beta on Android and iOS - work in progress for Electron
 
 ## Reference
 
 The API reference is [here](https://developer.chrome.com/apps/sockets_udp).
 
 # Release Notes
+
+Based on original plugin source https://github.com/MobileChromeApps/cordova-plugin-chrome-apps-sockets-udp
 
 ## 1.3.0 (Sep 27, 2016)
 - Adds `chrome.udp.setBroadcast()`
