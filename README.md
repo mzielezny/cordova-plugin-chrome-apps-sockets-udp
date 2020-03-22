@@ -46,6 +46,50 @@ Please remember that if yout want to run node plugin you have to use npm.
 To import any module you have to use "global.require" - main require is overriden by cordova
 
 
+# Donation
+If you were frustrated how to create cordova electron plugin and my code a little help you could buy me caffe by 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P829CRENNQRGC&item_name=New+developer+opportunities&currency_code=USD&source=url)
+
+## Exmaple UDP  broadcast code
+
+```typescript
+
+   private static numberToArrayBuffer(value: number) {
+        const view = new DataView(new ArrayBuffer(4));
+        view.setInt32(0, value, true);
+        return view.buffer;
+    }
+
+    public search(): void {
+        if (this.socketID) {
+            this.socketID = null;
+            window['chrome'].sockets.udp.close(this.socketID);
+        }
+        window['chrome'].sockets.udp.create({}, (createInfo) => {
+            this.socketID = createInfo['socketId'];
+            const posPort = 33377;
+            window['chrome'].sockets.udp.bind(this.socketID, '0.0.0.0', posPort, (bindResult) => {
+                window['chrome'].sockets.udp.setBroadcast(this.socketID, true, (broadcastResult) => {
+                    window['chrome'].sockets.udp.send(
+                        this.socketID,
+                        ConnectionService.numberToArrayBuffer(posPort),
+                        '255.255.255.255',
+                        33388,
+                        (sendResult) => {
+                            console.log(sendResult);
+                            setTimeout(() => {
+                                window['chrome'].sockets.udp.onReceive.addListener((result) => {
+                                    console.log(this.result);
+                                });
+                            }, 10000);
+                        });
+                });
+            });
+        });
+    }
+
+```
+
 ## Reference
 
 The API reference is [here](https://developer.chrome.com/apps/sockets_udp).

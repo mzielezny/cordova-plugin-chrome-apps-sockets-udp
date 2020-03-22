@@ -25,7 +25,7 @@
     /* global FileReader */
     /* global atob, btoa, Blob */
 
-    if (window.require === undefined) {
+    if (global.require === undefined) {
         console.error(
             'Electron Node.js integration is disabled, you can not use cordova-file-plugin without it\n' +
             'Check docs how to enable Node.js integration: https://cordova.apache.org/docs/en/latest/guide/platforms/electron/#quick-start');
@@ -36,86 +36,116 @@
 
     const dgram = global.require('dgram');
     var socketArray = [];
+    var onReceive;
 
     (function (exports, global) {
 
         exports.create = function (successCallback, errorCallback, args) {
-            var socket = dgram.createSocket('udp4');
-            socketArray.push(socket);
-            successCallback(0);
 
-        }
+            var size = 4096;
+            if (args[bufferSize] !== undefined) {
+                size = args[bufferSize]
+            }
 
-        exports.update = function (successCallback, errorCallback, args) {}
+            var socket = dgram.createSocket({
+                    type: 'udp4',
+			recvBufferSize: size});
 
-        exports.setPaused = function (successCallback, errorCallback, args) {}
+                    socketArray.push(socket);
 
-        exports.bind = function (successCallback, errorCallback, args) {
+                    successCallback(0);
 
-            var socketId = args[0];
-            var hostname = args[1];
-            var userPort = args[2];
+                }
 
-            socketArray[socketId].bind({address:hostname, port:userPort}, () => {
-                successCallback(0);
-            });
+                exports.update = function (successCallback, errorCallback, args) {
 
-        }
+                    var size = 4096;
 
-        exports.send = function (successCallback, errorCallback, args) {
+                    if (args[bufferSize] !== undefined) {
+                        size = args[bufferSize]
+                    }
 
-            var socketId = args[0];
+                    socket.setRecvBufferSize(size)
+                }
 
-            var port = args[1];
-            var address = args[2];
-            var value = args[3];
+                exports.setPaused = function (successCallback, errorCallback, args) {}
 
-            socketArray[socketId].send(value, port, address, successCallback);
+                    exports.bind = function (successCallback, errorCallback, args) {
 
-        }
+                    var socketId = args[0];
+                    var hostname = args[1];
+                    var userPort = args[2];
 
-        exports.close = function (successCallback, errorCallback, args) {
-			
-			 var socketId = args[0];
-			   socketArray[socketId].close(); 
-		}
+                    socketArray[socketId].bind({
+                        address: hostname,
+                        port: userPort
+                    }, () => {
+                        successCallback(0);
 
-        exports.update = function (successCallback, errorCallback, args) {}
+                        socketArray[socketId].on('message', (msg, rinfo) => {
 
-        exports.getInfo = function (successCallback, errorCallback, args) {}
+                            console.log(msg);
+                            console.log(rinfo);
 
-        exports.getSockets = function (successCallback, errorCallback, args) {}
+                            onReceive(socketId, msg, rinfo.address, rinfo.port);
+                        });
+                    });
 
-        exports.joinGroup = function (successCallback, errorCallback, args) {}
+                }
 
-        exports.leaveGroup = function (successCallback, errorCallback, args) {}
+                exports.send = function (successCallback, errorCallback, args) {
 
-        exports.getInfo = function (successCallback, errorCallback, args) {}
+                    var socketId = args[0];
 
-        exports.setMulticastTimeToLive = function (successCallback, errorCallback, args) {}
+                    var address = args[1];
+                    var port = args[2];
+                    var value = new Uint8Array(args[3]);
 
-        exports.setBroadcast = function (successCallback, errorCallback, args) {
+                    socketArray[socketId].send(value, port, address, successCallback);
 
-            var socketId = args[0];
-            var address = args[1];
-            var port = args[2];
+                }
 
-            socket[socketId].setBroadcast(true);
-            successCallback(0);
+                exports.close = function (successCallback, errorCallback, args) {
 
-        }
+                    var socketId = args[0];
+                    socketArray[socketId].close();
+                }
 
-        exports.getJoinedGroups = function (successCallback, errorCallback, args) {}
+                exports.getInfo = function (successCallback, errorCallback, args) {}
 
-        exports.registerReceiveEvents = function (successCallback, errorCallback, args) {
-			
-			
-			 socketArray[socketId].on('message', (msg, rinfo) => {
-				 args[0](msg);
-			 });
-		}
+                exports.getSockets = function (successCallback, errorCallback, args) {}
 
-    })(module.exports, window);
+                exports.joinGroup = function (successCallback, errorCallback, args) {}
 
-    require('cordova/exec/proxy').add('ChromeSocketsUdp', module.exports);
-})();
+                exports.leaveGroup = function (successCallback, errorCallback, args) {}
+
+                exports.setMulticastTimeToLive = function (successCallback, errorCallback, args) {
+
+                    var socketId = args[0];
+                    socket.setMulticastTTL(args[1]);
+					
+				}
+
+                exports.setBroadcast = function (successCallback, errorCallback, args) {
+
+                    var socketId = args[0];
+                    var address = args[1];
+                    var port = args[2];
+
+                    socketArray[socketId].setBroadcast(true);
+                    successCallback(0);
+
+                }
+
+                exports.getJoinedGroups = function (successCallback, errorCallback, args) {}
+
+                exports.registerReceiveEvents = function (successCallback, errorCallback, args) {
+
+                    onReceive = successCallback;
+
+                }
+
+        })(module.exports, window);
+
+        require('cordova/exec/proxy').add('ChromeSocketsUdp', module.exports);
+    })();
