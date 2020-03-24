@@ -172,6 +172,19 @@ function registerReceiveEvents() {
         };
         exports.onReceive.fire(info);
     };
+	
+	if (platform.id == 'electron')
+	{
+		win = function () {
+        var info = {
+            socketId: arguments[0][0],
+            data: arguments[0][1],
+            remoteAddress: arguments[0][2],
+            remotePort: arguments[0][3]
+        };
+        exports.onReceive.fire(info);
+        };
+	}
 
     // TODO: speical callback for android, DELETE when multipart result for
     // android is avaliable

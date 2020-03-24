@@ -92,8 +92,13 @@
 
                             console.log(msg);
                             console.log(rinfo);
+						var myArr =[]
+						myArr.push(socketId); 
+						myArr.push(msg); 
+						myArr.push(rinfo.address);
+						myArr.push(rinfo.port); 
 
-                            onReceive({socket: socketId, message: msg, address: rinfo.address, port: rinfo.port});
+                            onReceive( myArr );
                         });
                     });
 
