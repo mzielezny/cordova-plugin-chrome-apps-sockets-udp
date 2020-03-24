@@ -43,9 +43,15 @@
         exports.create = function (successCallback, errorCallback, args) {
 
             var size = 4096;
-            if (args[bufferSize] !== undefined) {
+			
+			try {
+            if (args['bufferSize'] !== undefined) {
                 size = args[bufferSize]
             }
+			}catch(e)
+			{
+				console.log(e); 
+			}
 
             var socket = dgram.createSocket({
                     type: 'udp4',
@@ -87,7 +93,7 @@
                             console.log(msg);
                             console.log(rinfo);
 
-                            onReceive(socketId, msg, rinfo.address, rinfo.port);
+                            onReceive({socket: socketId, message: msg, address: rinfo.address, port: rinfo.port});
                         });
                     });
 
