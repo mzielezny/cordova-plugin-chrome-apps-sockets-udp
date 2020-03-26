@@ -1,4 +1,4 @@
-# chrome.sockets.tcp Plugin electron
+# UDP communication Plugin for electron
 
 This plugin provides UDP sockets for Android, iOS and Electron
 
