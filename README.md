@@ -46,8 +46,8 @@ Please remember that if yout want to run node plugin you have to use npm.
 To import any module you have to use "global.require" - main require is overriden by cordova
 
 
-# Donation
-If you were frustrated how to create cordova electron plugin and my code a little help you could buy me caffe by 
+## Cup of caffe ? 
+If you were frustrated how to create cordova electron plugin and my code a little help you could buy me a cup of caffe by 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P829CRENNQRGC&item_name=New+developer+opportunities&currency_code=USD&source=url)
 
 ## Exmaple UDP  broadcast code
