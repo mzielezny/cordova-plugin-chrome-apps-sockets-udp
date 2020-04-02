@@ -19,11 +19,7 @@
  *
  */
 (function() {
-  /* global require, exports, module */
-  /* global FILESYSTEM_PREFIX */
-  /* global IDBKeyRange */
-  /* global FileReader */
-  /* global atob, btoa, Blob */
+ 
 
   if (global.require === undefined) {
     console.error(

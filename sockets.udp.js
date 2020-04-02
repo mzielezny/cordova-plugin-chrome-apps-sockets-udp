@@ -163,6 +163,8 @@ exports.onReceiveError = new Event('onReceiveError');
 
 function registerReceiveEvents() {
 
+	console.log('Registering receive event'); 
+
     var win = function () {
         var info = {
             socketId: arguments[0],
