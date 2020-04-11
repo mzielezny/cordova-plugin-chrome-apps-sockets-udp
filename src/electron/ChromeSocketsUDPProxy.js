@@ -90,7 +90,7 @@
             myArr.push(rinfo.address);
             myArr.push(rinfo.port);
 
-            onReceive(myArr);
+            onReceive(myArr, {keepCallback:true});
           });
         }
       );
